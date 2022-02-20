@@ -1,6 +1,6 @@
 import random
 
-
+hand_type = {0: 'ぐー', 1: 'ちょき', 2: 'ぱー'}
 print('**じゃんけん大会ゲーム**')
 print('ゲームを選んでください')
 print('0:	一人プレイ')
@@ -73,7 +73,8 @@ if game_select == 1:
 
         print(user_list)
         print(hand_list)
-
+        for i in range(len(user_list)):
+            print('{}さんは {}'.format(user_list[i].name, hand_type[user_list[i].hand]))
         if hand_list.count(0) != 0 and hand_list.count(1) != 0 and hand_list.count(2) != 0:
             print('あいこ')
             temp_user_list = user_list.copy()
@@ -117,5 +118,26 @@ if game_select == 1:
 elif game_select == 0:
     solo_user = Player()
     solo_user.name = input('ユーザーの名前を入力してください')
+    solo_pc = PC()
+    solo_pc.name = 'PC1号'
+    print(solo_pc.name)
+    user_name_list = [solo_user.name, solo_pc.name]
+    user_list = [solo_user, solo_pc]
     while True:
-        solo_user.hand_func()
+        hand_list = []
+        solo_user.hand = solo_user.hand_func()
+        solo_pc.hand = solo_pc.hand_func()
+        result_element = solo_user.hand - solo_pc.hand
+        for i in range(len(user_list)):
+            print('{}さんは {}'.format(user_list[i].name, hand_type[user_list[i].hand]))
+
+        if result_element == 0:
+            print('あいこ')
+        elif result_element % 3 == 2:
+            print('勝利者は')
+            print('{}さん'.format(solo_user.name))
+            break
+        elif result_element % 3 == 1:
+            print('勝利者は')
+            print('{}さん'.format(solo_pc.name))
+            break
